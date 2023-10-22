@@ -22,7 +22,8 @@ window.addEventListener('load', function () {
           this.keys.splice(this.keys.indexOf(e.key), 1);
         }
       }
-    )};
+      )
+    };
   }
 
 
@@ -67,7 +68,7 @@ window.addEventListener('load', function () {
       } else if (input.keys.indexOf('a') > -1) {
         this.speed = -15;
       } else if (input.keys.indexOf('w') > -1 && this.onGround()) {
-        this.vy -= 20;
+        this.vy -= 23;
       } else {
         this.speed = 0;
       }
@@ -129,8 +130,8 @@ window.addEventListener('load', function () {
     constructor(gameWidth, gameHeight) {
       this.gameWidth = gameWidth;
       this.gameHeight = gameHeight;
-      this.width = 160;
-      this.height = 120;
+      this.width = 400;
+      this.height = 200;
       this.image = document.getElementById('enemyImage');
       this.x = this.width + this.gameWidth
       this.y = this.gameHeight - this.height;
@@ -139,30 +140,30 @@ window.addEventListener('load', function () {
       this.frameTimer = 0;
       this.frameInterval = 1000 / this.fps;
       this.fps = 20;
-      this.speed = 8;
+      this.speed = 15;
       this.markedForDeletion = false;
     }
     draw(context) {
-      context.strokeStyle = 'white';
-      context.strokeRect(this.x, this.y, this.width, this.height);
-      context.beginPath();
-      context.arc(this.x, this.y, this.width/2, 0, Math.PI * 2);
-      
-      
+      //context.strokeStyle = 'white';
+      //context.strokeRect(this.x, this.y, this.width, this.height);
+      //context.beginPath();
+      //context.arc(this.x, this.y, this.width/2, 0, Math.PI * 2);
+
+
       context.drawImage(this.image, this.frameX * this.width, 0, this.width, this.height, this.x, this.y, this.width, this.height);
 
     }
     update(deltaTime) {
       if (this.frameTimer > this.frameInterval) {
         if (this.frameX >= this.maxframe) this.frameX = 0;
-        elsethis.frameX++;
+        //else {this.frameX++;
       } else {
         this.frameTimer += deltaTime
       }
       this.x -= this.speed;
-      if (this.x < 0 - this.width){
-         this.markedForDeletion = true;
-         score++;
+      if (this.x < 0 - this.width) {
+        this.markedForDeletion = true;
+        score++;
       }
 
     }
@@ -188,10 +189,10 @@ window.addEventListener('load', function () {
     context.fillStyle = 'white';
     context.font = '80px Comic Sans MS';
     context.fillText('Score: ' + score, 100, 100);
-    if(gameover){
+    if (gameover) {
       context.textAlign = 'center';
       context.fillStyle = 'white';
-      context.fillText('GAME OVER BITCH', canvas.width/2, 202);
+      context.fillText('GAME OVER BITCH', canvas.width / 2, 202);
     }
 
 
@@ -219,9 +220,9 @@ window.addEventListener('load', function () {
     if (!gameover) requestAnimationFrame(animate);
   }
   animate(0);
-  
 
-  function playGameAudio(){
+
+  function playGameAudio() {
     const audio = document.getElementById('gameAudio');
     audio.loop = true;
     audio.play();
