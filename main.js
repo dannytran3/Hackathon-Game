@@ -1,8 +1,9 @@
 window.addEventListener('load', function () {
   const canvas = document.getElementById('canvas1');
   const ctx = canvas.getContext('2d');
-  canvas.width = 800;
-  canvas.height = 720;
+  canvas.width = 2000;
+  canvas.height = 1000;
+  let enemies = [];
 
   class InputHandler {
     constructor() {
@@ -21,7 +22,8 @@ window.addEventListener('load', function () {
     }
   }
 
-  class Player {
+
+class Player {
     constructor(gameWidth, gameHeight) {
       this.gameWidth = gameWidth;
       this.gameHeight = gameHeight;
@@ -44,11 +46,11 @@ window.addEventListener('load', function () {
 
     update(input) {
       if (input.keys.indexOf('ArrowRight') > -1) {
-        this.speed = 5;
+        this.speed = 10;
       } else if (input.keys.indexOf('ArrowLeft') > -1) {
-        this.speed = -5;
+        this.speed = -10;
       } else if (input.keys.indexOf('ArrowUp') > -1 && this.onGround()) {
-        this.vy -= 32;
+        this.vy -= 40;
       } else {
         this.speed = 0;
       }
@@ -87,12 +89,12 @@ window.addEventListener('load', function () {
       this.x = 0;
       this.y = 0;
       this.width = 2400;
-      this.height = 720;
+      this.height = 1000;
       this.speed = 7;
     }
     draw(context) {
       context.drawImage(this.image, this.x, this.y, this.width, this.height);
-      context.drawImage(this.image, this.x + this.width - this.speed, this.y, this.width.this.height);
+      context.drawImage(this.image, this.x + this.width - this.speed, this.y, this.width, this.height);
     }
     update() {
       this.x -= this.speed;
@@ -105,13 +107,39 @@ window.addEventListener('load', function () {
 
 
   class Enemy {
-
-
+    constructor(gameWidth, gameHeight){
+      this.gameWidth = gameWidth;
+      this.gameHeight = gameHeight;
+      this.width = 800;
+      this.height = 600;
+      this.image = document.getElementById('enemyImage');
+      this.x = this.width+500;
+      this.y = this.gameHeight- this.height;
+      this.frameX = 0;
+      this.speed = 8;
+    } 
+    draw(context){
+      context.drawImage(this.image, this.frameX * this.width, 0,this.width, this.height, this.x,this.y, this.width, this.height);
+      
+    }
+    update(){
+      this.x -= this.speed;
+    }
 
   }
 
-  function handleEnemies() {
-
+  function handleEnemies(deltaTime) {
+    if(enemyTimer > enemyInterval){
+      enemies.push(new Enemy(canvas.width, canvas.height));
+      enemyTimer = 0;
+    }
+    else {
+      enemyTimer += deltaTime;
+    }
+    enemies.forEach(enemy => {
+      enemy.draw(ctx);
+      enemy.update();
+    })
 
   }
 
@@ -123,19 +151,26 @@ window.addEventListener('load', function () {
   const input = new InputHandler();
   const player = new Player(canvas.width, canvas.height);
   const background = new Background(canvas.width, canvas.height);
+  const enemy1 = new Enemy(canvas.width, canvas.height);
 
-  function animate() {
+  let lastTime = 0;
+  let enemyTimer = 0;
+  let enemy = 1000;
+
+  function animate(timeStamp) {
+    const deltaTime = timeStamp - lastTime;
+    lastTime = timeStamp;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    //background.draw(ctx);
-    //background.update();
+    background.draw(ctx);
+    background.update();
     player.draw(ctx);
     player.update(input);
-    //background.draw(ctx);
-
-
+    enemy1.draw(ctx);
+    enemy1.update();
+    //handleEnemies(deltaTime);
     requestAnimationFrame(animate);
   }
-  animate();
+  animate(0);
 
 
 });
