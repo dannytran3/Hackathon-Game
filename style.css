@@ -1,15 +1,21 @@
 body {
-  background: black; 
+  background: black;
 }
 
 #canvas1 {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform:(-50%, -50%);
-  border: 5px solid white;
+  position: fixed;
 }
 
-#playerImage, #backgroundImage, #enemyImage {
+#backgroundImage,
+#playerImage,
+#enemyImage {
   display: none;
+}
+
+#gameAudio {
+  display: none;
+}
+
+.player-sprite {
+  transform: scale(2);
 }
