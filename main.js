@@ -228,7 +228,7 @@ window.addEventListener('load', function () {
     audio.play();
   }
 
-  //playGameAudio();
+  playGameAudio();
 
 
 
